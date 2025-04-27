@@ -1,13 +1,37 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
+import React from 'react';
+import { CalendarHeader } from '@/components/CalendarHeader';
+import { Footer } from '@/components/Footer';
+import { MonthView } from '@/components/calendar/MonthView';
+import { WeekView } from '@/components/calendar/WeekView';
+import { EventDetail } from '@/components/event-detail/EventDetail';
+import { Chat } from '@/components/Chat';
+import { useApp } from '@/context/AppContext';
+import { AppProvider } from '@/context/AppContext';
+
+const CalendarApp: React.FC = () => {
+  const { currentView } = useApp();
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="flex flex-col h-screen overflow-hidden">
+      <CalendarHeader />
+      
+      {currentView === 'month' ? <MonthView /> : <WeekView />}
+      
+      <Footer />
+      
+      <EventDetail />
+      <Chat />
     </div>
+  );
+};
+
+// Nous utilisons un composant wrapper pour fournir le contexte
+const Index: React.FC = () => {
+  return (
+    <AppProvider>
+      <CalendarApp />
+    </AppProvider>
   );
 };
 
