@@ -13,6 +13,7 @@ export const CalendarHeader: React.FC = () => {
     currentView, 
     setCurrentView, 
     currentDate, 
+    setCurrentDate,
     navigateMonth, 
     navigateWeek 
   } = useApp();
