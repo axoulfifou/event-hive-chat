@@ -34,27 +34,28 @@ export const MonthView: React.FC = () => {
     <div className="flex-1 overflow-y-auto pb-16">
       <div className="grid grid-cols-7 text-center border-b">
         {weekDays.map(day => (
-          <div key={day} className="py-2 text-xs font-medium text-muted-foreground">
+          <div key={day} className="py-2 text-xs font-bold text-muted-foreground">
             {day}
           </div>
         ))}
       </div>
       <div className="grid grid-cols-7 auto-rows-fr min-h-[calc(100%-32px)] h-full">
         {days.map((day, idx) => {
-          // Events for the current day
           const dayEvents = events.filter(event => isSameDay(event.date, day));
+          const hasEvents = dayEvents.length > 0;
           
           return (
             <div 
               key={idx}
               className={cn(
                 "p-1 border-b border-r min-h-[100px]",
-                !isSameMonth(day, currentDate) && "bg-muted/30 text-muted-foreground"
+                !isSameMonth(day, currentDate) && "bg-muted/30 text-muted-foreground",
+                hasEvents && "event-day"
               )}
             >
               <div 
                 className={cn(
-                  "text-xs font-medium mb-1 p-0.5 rounded-full w-6 h-6 flex items-center justify-center",
+                  "text-xs font-bold mb-1 p-0.5 rounded-full w-6 h-6 flex items-center justify-center",
                   isToday(day) && "bg-primary text-primary-foreground"
                 )}
               >
