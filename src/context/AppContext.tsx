@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
 import { ViewType, Event, User, Note, Reaction, Message } from '../types';
 import { events as initialEvents, users as initialUsers, messages as initialMessages, currentUser as defaultCurrentUser } from '../sample-data';
@@ -30,6 +29,9 @@ interface AppContextType {
   hasNewMessages: boolean;
   setHasNewMessages: (value: boolean) => void;
   showNotification: (message: string, eventId?: string) => void;
+  updateUser: (user: User) => void;
+  addUser: (name: string) => void;
+  removeUser: (userId: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -229,6 +231,40 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   }, [currentUser, chatOpen, showNotification]);
 
+  const updateUser = useCallback((updatedUser: User) => {
+    setUsers(prev => prev.map(user => 
+      user.id === updatedUser.id ? updatedUser : user
+    ));
+    if (updatedUser.id === currentUser.id) {
+      setCurrentUser(updatedUser);
+    }
+  }, [currentUser.id]);
+
+  const addUser = useCallback((name: string) => {
+    const initials = name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase();
+      
+    const availableColors = ['blue', 'green', 'yellow', 'red', 'purple', 'orange'];
+    const usedColors = users.map(u => u.color);
+    const color = availableColors.find(c => !usedColors.includes(c as User['color'])) || 'blue';
+
+    const newUser: User = {
+      id: Date.now().toString(),
+      name,
+      initials,
+      color: color as User['color']
+    };
+
+    setUsers(prev => [...prev, newUser]);
+  }, [users]);
+
+  const removeUser = useCallback((userId: string) => {
+    setUsers(prev => prev.filter(user => user.id !== userId));
+  }, []);
+
   const value = {
     currentView,
     setCurrentView,
@@ -253,7 +289,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     sendMessage,
     hasNewMessages,
     setHasNewMessages,
-    showNotification
+    showNotification,
+    updateUser,
+    addUser,
+    removeUser
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
