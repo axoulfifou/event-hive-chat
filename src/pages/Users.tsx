@@ -5,10 +5,8 @@ import { Avatar } from '@/components/Avatar';
 import { Button } from '@/components/ui/button';
 import { Plus, UserX } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { AppProvider } from '@/context/AppContext';
 
-// Component that uses the AppContext
-const UsersContent = () => {
+const Users = () => {
   const { users, currentUser, addUser, removeUser } = useApp();
   const [newUserName, setNewUserName] = React.useState('');
 
@@ -50,22 +48,13 @@ const UsersContent = () => {
                 size="icon"
                 onClick={() => removeUser(user.id)}
               >
-                <UserX className="w-4 w-4" />
+                <UserX className="w-4 h-4" />
               </Button>
             )}
           </div>
         ))}
       </div>
     </div>
-  );
-};
-
-// Wrapper component that provides the AppContext
-export const Users = () => {
-  return (
-    <AppProvider>
-      <UsersContent />
-    </AppProvider>
   );
 };
 

@@ -7,9 +7,8 @@ import { WeekView } from '@/components/calendar/WeekView';
 import { EventDetail } from '@/components/event-detail/EventDetail';
 import { Chat } from '@/components/Chat';
 import { useApp } from '@/context/AppContext';
-import { AppProvider } from '@/context/AppContext';
 
-const CalendarApp: React.FC = () => {
+const Index: React.FC = () => {
   const { currentView } = useApp();
 
   return (
@@ -23,15 +22,6 @@ const CalendarApp: React.FC = () => {
       <EventDetail />
       <Chat />
     </div>
-  );
-};
-
-// Nous utilisons un composant wrapper pour fournir le contexte
-const Index: React.FC = () => {
-  return (
-    <AppProvider>
-      <CalendarApp />
-    </AppProvider>
   );
 };
 
