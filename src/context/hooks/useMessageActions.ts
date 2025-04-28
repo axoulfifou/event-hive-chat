@@ -1,6 +1,6 @@
 
 import { useCallback } from 'react';
-import { Message } from '@/types';
+import { Message, User } from '@/types';
 
 export const useMessageActions = (
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>,
