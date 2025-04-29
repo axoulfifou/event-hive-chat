@@ -10,11 +10,13 @@ import { useApp } from '@/context/AppContext';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export const Chat: React.FC = () => {
   const { chatOpen, setChatOpen, messages, users, currentUser, sendMessage } = useApp();
   const [messageText, setMessageText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
   const handleClose = () => {
     setChatOpen(false);
@@ -37,7 +39,13 @@ export const Chat: React.FC = () => {
 
   return (
     <Sheet open={chatOpen} onOpenChange={setChatOpen}>
-      <SheetContent side="left" className="sm:max-w-md flex flex-col">
+      <SheetContent 
+        side="left" 
+        className={cn(
+          "flex flex-col",
+          isMobile ? "w-full max-w-full p-4" : "sm:max-w-md"
+        )}
+      >
         <SheetHeader className="space-y-0 pb-4">
           <div className="flex justify-between items-center">
             <SheetTitle className="text-xl font-semibold">Chat Groupe</SheetTitle>

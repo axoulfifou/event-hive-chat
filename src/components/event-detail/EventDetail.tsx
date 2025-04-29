@@ -10,9 +10,11 @@ import { useApp } from '@/context/AppContext';
 import { EventNotes } from '@/components/event-detail/EventNotes';
 import { EventReactions } from '@/components/event-detail/EventReactions';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export const EventDetail: React.FC = () => {
   const { selectedEvent, setSelectedEvent, users, deleteEvent, currentUser } = useApp();
+  const isMobile = useIsMobile();
   
   const handleClose = () => {
     setSelectedEvent(null);
@@ -29,7 +31,10 @@ export const EventDetail: React.FC = () => {
 
   return (
     <Sheet open={!!selectedEvent} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-      <SheetContent className="sm:max-w-md flex flex-col">
+      <SheetContent className={cn(
+        "flex flex-col",
+        isMobile ? "w-full max-w-full p-4" : "sm:max-w-md"
+      )}>
         <SheetHeader className="space-y-0 pb-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
