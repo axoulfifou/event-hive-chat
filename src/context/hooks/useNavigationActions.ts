@@ -2,7 +2,7 @@
 import { useCallback } from 'react';
 import { addMonths, subMonths, addWeeks, subWeeks } from 'date-fns';
 
-export const useNavigationActions = (setCurrentDate: (date: Date) => void) => {
+export const useNavigationActions = (setCurrentDate: React.Dispatch<React.SetStateAction<Date>>) => {
   const navigateMonth = useCallback((direction: 'next' | 'prev') => {
     setCurrentDate((prevDate: Date) => {
       return direction === 'next' ? addMonths(prevDate, 1) : subMonths(prevDate, 1);

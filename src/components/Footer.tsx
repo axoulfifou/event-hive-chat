@@ -1,12 +1,13 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { MessageCircle, Calendar, Plus, UserRound } from 'lucide-react';
+import { MessageCircle, Settings, Plus, UserRound, Users } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { NewEventDialog } from '@/components/NewEventDialog';
 import { cn } from '@/lib/utils';
 import { UserProfileDialog } from '@/components/UserProfileDialog';
+import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   const { chatOpen, setChatOpen, hasNewMessages, setHasNewMessages, currentUser } = useApp();
@@ -51,9 +52,11 @@ export const Footer: React.FC = () => {
         <UserProfileDialog />
       </Dialog>
       
-      <Button variant="ghost" size="lg">
-        <Calendar />
-        <span className="ml-2 hidden md:inline font-semibold">Calendrier</span>
+      <Button variant="ghost" size="lg" asChild>
+        <Link to="/users" className="flex items-center">
+          <Settings />
+          <span className="ml-2 hidden md:inline font-semibold">Paramètres</span>
+        </Link>
       </Button>
     </div>
   );
