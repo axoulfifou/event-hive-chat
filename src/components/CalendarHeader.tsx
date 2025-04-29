@@ -31,23 +31,23 @@ export const CalendarHeader: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-2 px-2 py-3 md:px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+    <div className="flex flex-col space-y-2 px-2 py-3 md:px-4 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <CalendarClock className="mr-2" />
           <h1 className="text-xl font-semibold">Event Hive</h1>
         </div>
-        <Tabs value={currentView} onValueChange={handleViewChange} className="bg-white bg-opacity-20 rounded-md">
+        <Tabs value={currentView} onValueChange={handleViewChange} className="bg-white bg-opacity-40 rounded-md">
           <TabsList className="bg-transparent">
             <TabsTrigger 
               value="month"
-              className="data-[state=active]:bg-white data-[state=active]:text-blue-600 text-white"
+              className="data-[state=active]:bg-white data-[state=active]:text-blue-600 text-blue-600"
             >
               Mois
             </TabsTrigger>
             <TabsTrigger 
               value="week"
-              className="data-[state=active]:bg-white data-[state=active]:text-blue-600 text-white"
+              className="data-[state=active]:bg-white data-[state=active]:text-blue-600 text-blue-600"
             >
               Semaine
             </TabsTrigger>
@@ -64,7 +64,7 @@ export const CalendarHeader: React.FC = () => {
             variant="ghost" 
             size="icon" 
             onClick={() => handleNavigate('prev')}
-            className="text-white hover:bg-white hover:bg-opacity-20"
+            className="text-blue-600 hover:bg-white hover:bg-opacity-30"
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
@@ -72,7 +72,7 @@ export const CalendarHeader: React.FC = () => {
             variant="ghost" 
             onClick={() => setCurrentDate(new Date())} 
             size="sm"
-            className="text-white hover:bg-white hover:bg-opacity-20"
+            className="text-blue-600 hover:bg-white hover:bg-opacity-30"
           >
             Aujourd'hui
           </Button>
@@ -80,7 +80,7 @@ export const CalendarHeader: React.FC = () => {
             variant="ghost" 
             size="icon" 
             onClick={() => handleNavigate('next')}
-            className="text-white hover:bg-white hover:bg-opacity-20"
+            className="text-blue-600 hover:bg-white hover:bg-opacity-30"
           >
             <ChevronRight className="h-5 w-5" />
           </Button>

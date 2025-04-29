@@ -77,4 +77,27 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
+const CardBadge = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "absolute -top-2 -right-2 rounded-full px-2 py-1 text-xs font-medium bg-primary text-white",
+      className
+    )}
+    {...props}
+  />
+))
+CardBadge.displayName = "CardBadge"
+
+export { 
+  Card, 
+  CardHeader, 
+  CardTitle, 
+  CardDescription, 
+  CardContent, 
+  CardFooter,
+  CardBadge 
+}
