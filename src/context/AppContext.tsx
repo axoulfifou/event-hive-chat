@@ -57,11 +57,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     showNotification
   );
 
-  // Filter events based on selected user
+  // Filter events based on selected user but check if participants property exists
   const filteredEvents = selectedUserFilter
     ? events.filter(event => 
         event.userId === selectedUserFilter || 
-        event.participants?.some(p => p.id === selectedUserFilter)
+        (event.participants && event.participants.some(p => p.id === selectedUserFilter))
       )
     : events;
 

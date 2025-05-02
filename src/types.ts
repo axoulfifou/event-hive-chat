@@ -17,6 +17,7 @@ export interface Event {
   userId: string;
   notes: Note[];
   reactions: Reaction[];
+  participants?: User[]; // Add optional participants property
 }
 
 export interface Note {
