@@ -6,19 +6,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useApp } from '@/context/AppContext';
 import { Avatar } from '@/components/Avatar';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { User } from '@/types';
 
 export const UserProfileDialog: React.FC = () => {
   const { currentUser, updateUser } = useApp();
-
-  const colorOptions: User['color'][] = ['blue', 'green', 'yellow', 'red', 'purple', 'orange'];
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -35,12 +32,8 @@ export const UserProfileDialog: React.FC = () => {
     updateUser({ ...currentUser, name: e.target.value });
   };
 
-  const handleColorChange = (color: User['color']) => {
-    updateUser({ ...currentUser, color });
-  };
-
   return (
-    <DialogContent className="sm:max-w-[425px] rounded-[30px]">
+    <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle className="text-2xl font-bold">Profil</DialogTitle>
         <DialogDescription>
@@ -75,19 +68,10 @@ export const UserProfileDialog: React.FC = () => {
         </div>
         
         <div className="grid gap-2">
-          <Label>Couleur de l'utilisateur</Label>
-          <div className="grid grid-cols-3 gap-2">
-            {colorOptions.map((color) => (
-              <Button
-                key={color}
-                type="button"
-                className={`h-12 rounded-full border-2 ${currentUser.color === color ? 'border-primary' : 'border-transparent'}`}
-                style={{ backgroundColor: `var(--event-${color})` }}
-                onClick={() => handleColorChange(color)}
-              >
-                {currentUser.color === color && <span className="absolute inset-0 flex items-center justify-center text-white">✓</span>}
-              </Button>
-            ))}
+          <Label>Couleur assignée</Label>
+          <div className="flex items-center gap-2">
+            <div className={`w-6 h-6 rounded-full bg-gradient-to-br from-event-${currentUser.color}/50 to-event-${currentUser.color}`} />
+            <span className="font-medium">{currentUser.color}</span>
           </div>
         </div>
       </div>

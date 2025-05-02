@@ -32,7 +32,7 @@ export const EventDetail: React.FC = () => {
   return (
     <Sheet open={!!selectedEvent} onOpenChange={(isOpen) => !isOpen && handleClose()}>
       <SheetContent className={cn(
-        "flex flex-col rounded-[30px]",
+        "flex flex-col",
         isMobile ? "w-full max-w-full p-4" : "sm:max-w-md"
       )}>
         <SheetHeader className="space-y-0 pb-4">
