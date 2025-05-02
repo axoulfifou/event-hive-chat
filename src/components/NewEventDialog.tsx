@@ -1,138 +1,159 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useApp } from '@/context/AppContext';
 import { cn } from '@/lib/utils';
-import { z } from 'zod';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-const formSchema = z.object({
-  title: z.string().min(1, "Le titre est requis"),
-  description: z.string().min(1, "La description est requise"),
-  date: z.date({ required_error: "La date est requise" }),
-});
+type EventType = 'event' | 'busy' | 'free';
 
 export const NewEventDialog: React.FC = () => {
   const { addEvent, currentUser } = useApp();
   
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      date: new Date(),
-    },
-  });
-  
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [date, setDate] = useState<Date>(new Date());
+  const [eventType, setEventType] = useState<EventType>('event');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!title.trim()) return;
+    
+    const typePrefix = eventType === 'busy' ? '[Occupé] ' : 
+                       eventType === 'free' ? '[Libre] ' : '';
+    
+    const updatedDescription = `${description}\n\nCréé par ${currentUser.name}`;
+    
     addEvent({
-      title: values.title,
-      description: values.description,
-      date: values.date,
+      title: typePrefix + title,
+      description: updatedDescription,
+      date: date,
       userId: currentUser.id,
     });
     
-    form.reset();
-    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    // Reset the form
+    setTitle('');
+    setDescription('');
+    setDate(new Date());
+    setEventType('event');
+    
+    // Close the dialog by dispatching an Escape key event
+    const event = new KeyboardEvent('keydown', { key: 'Escape' });
+    document.dispatchEvent(event);
   };
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <DialogContent className="sm:max-w-[500px] rounded-[30px]">
       <DialogHeader>
-        <DialogTitle>Nouvel événement</DialogTitle>
+        <DialogTitle className="text-2xl font-bold">Nouvel événement</DialogTitle>
+        <DialogDescription>
+          Ajoutez un nouvel événement à votre calendrier
+        </DialogDescription>
       </DialogHeader>
-      
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Titre</FormLabel>
-                <FormControl>
-                  <Input placeholder="Ex: Dîner au restaurant" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      <form onSubmit={handleSubmit}>
+        <div className="grid gap-4 py-4">
+          <div>
+            <Label htmlFor="event-type">Type d'événement</Label>
+            <RadioGroup 
+              id="event-type" 
+              value={eventType} 
+              onValueChange={(value) => setEventType(value as EventType)}
+              className="flex space-x-2 mt-2"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="event" id="event" />
+                <Label htmlFor="event">Événement</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="busy" id="busy" />
+                <Label htmlFor="busy">Occupé</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="free" id="free" />
+                <Label htmlFor="free">Libre</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="title">Titre</Label>
+            <Input
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Réunion d'équipe"
+              className="w-full"
+            />
+          </div>
           
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Détails de l'événement..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid gap-2">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Détails de l'événement..."
+              className="min-h-[100px]"
+            />
+          </div>
           
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Date</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "EEEE d MMMM yyyy", { locale: fr })
-                        ) : (
-                          <span>Choisir une date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                      locale={fr}
-                      className="pointer-events-auto"
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          <DialogFooter>
-            <Button type="submit">Ajouter l'événement</Button>
-          </DialogFooter>
-        </form>
-      </Form>
+          <div className="grid gap-2">
+            <Label htmlFor="date">Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date ? format(date, "PPP", { locale: fr }) : <span>Sélectionnez une date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(date) => date && setDate(date)}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500">Ajouter</Button>
+        </DialogFooter>
+      </form>
     </DialogContent>
   );
 };
+
+// Ajout du composant Label car il est utilisé dans ce fichier
+const Label = ({ htmlFor, children, className }: { htmlFor?: string; children: React.ReactNode; className?: string }) => (
+  <label htmlFor={htmlFor} className={cn("text-sm font-medium leading-none", className)}>
+    {children}
+  </label>
+);
