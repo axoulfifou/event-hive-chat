@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -12,13 +12,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useApp } from '@/context/AppContext';
 import { Avatar } from '@/components/Avatar';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { User } from '@/types';
+import { X } from 'lucide-react';
 
 export const UserProfileDialog: React.FC = () => {
   const { currentUser, updateUser } = useApp();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const colorOptions: User['color'][] = ['blue', 'green', 'yellow', 'red', 'purple', 'orange'];
+  const colorOptions: User['color'][] = ['blue', 'green', 'yellow', 'red', 'purple', 'orange', 'teal'];
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -40,16 +42,23 @@ export const UserProfileDialog: React.FC = () => {
   };
 
   return (
-    <DialogContent className="sm:max-w-[425px] rounded-[30px]">
+    <DialogContent className="sm:max-w-[425px] rounded-[30px] mx-10">
       <DialogHeader>
-        <DialogTitle className="text-2xl font-bold">Profil</DialogTitle>
-        <DialogDescription>
-          Modifiez vos informations de profil ici
-        </DialogDescription>
+        <DialogTitle className="text-2xl font-bold text-center">Paramètres</DialogTitle>
       </DialogHeader>
-      <div className="grid gap-6 py-4">
-        <div className="flex flex-col items-center gap-4">
-          <Avatar user={currentUser} size="lg" />
+      <div className="grid gap-8 py-4">
+        <div className="flex flex-col items-center gap-4 relative">
+          <div className="relative">
+            <Avatar user={currentUser} size="lg" className="h-24 w-24" />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute -top-2 -right-2 h-8 w-8 rounded-full bg-white shadow-md"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
           <Label htmlFor="avatar" className="cursor-pointer">
             <span className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-md hover:bg-primary/20 transition-colors">
               Changer l'avatar
@@ -64,24 +73,51 @@ export const UserProfileDialog: React.FC = () => {
           </Label>
         </div>
 
-        <div className="grid gap-2">
-          <Label htmlFor="name">Nom</Label>
-          <Input
-            id="name"
-            value={currentUser.name}
-            onChange={handleNameChange}
-            className="font-medium"
-          />
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="name">Nom</Label>
+            <Input
+              id="name"
+              value={currentUser.name}
+              onChange={handleNameChange}
+              className="font-medium rounded-xl"
+              placeholder="Votre nom"
+            />
+          </div>
+          
+          <div className="grid gap-2">
+            <Label htmlFor="email">Adresse e-mail</Label>
+            <Input
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="font-medium rounded-xl"
+              placeholder="Votre email"
+              type="email"
+            />
+          </div>
+          
+          <div className="grid gap-2">
+            <Label htmlFor="password">Mot de passe</Label>
+            <Input
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="font-medium rounded-xl"
+              placeholder="••••••••"
+              type="password"
+            />
+          </div>
         </div>
         
         <div className="grid gap-2">
-          <Label>Couleur de l'utilisateur</Label>
-          <div className="grid grid-cols-3 gap-2">
+          <Label>Couleur</Label>
+          <div className="grid grid-cols-7 gap-2">
             {colorOptions.map((color) => (
               <Button
                 key={color}
                 type="button"
-                className={`h-12 rounded-full border-2 ${currentUser.color === color ? 'border-primary' : 'border-transparent'}`}
+                className={`h-10 w-10 rounded-full border-2 p-0 ${currentUser.color === color ? 'border-violet-500' : 'border-transparent'}`}
                 style={{ backgroundColor: `var(--event-${color})` }}
                 onClick={() => handleColorChange(color)}
               >

@@ -9,7 +9,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
-const Users = () => {
+interface UsersProps {
+  inSettingsTab?: boolean;
+}
+
+const Users = ({ inSettingsTab = false }: UsersProps) => {
   const { users, currentUser, removeUser } = useApp();
   const [email, setEmail] = useState('');
 
@@ -32,10 +36,12 @@ const Users = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
-        Gestion des participants
-      </h1>
+    <div className={inSettingsTab ? "" : "container mx-auto px-10 py-8 max-w-4xl"}>
+      {!inSettingsTab && (
+        <h1 className="text-2xl font-bold mb-6 text-center text-violet-500">
+          Gestion des participants
+        </h1>
+      )}
       
       <div className="grid gap-6">
         <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm rounded-[30px]">
@@ -96,7 +102,7 @@ const Users = () => {
               <div className="mt-6 border-t pt-4">
                 <Button 
                   onClick={notifyAllUsers}
-                  className="bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 w-full mb-4"
+                  className="bg-gradient-to-r from-violet-400 to-blue-400 hover:from-violet-500 hover:to-blue-500 w-full mb-4"
                 >
                   <Bell className="w-4 h-4 mr-2" />
                   Notifier tous les membres
@@ -109,12 +115,12 @@ const Users = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="email@exemple.com"
-                      className="w-full"
+                      className="w-full rounded-xl"
                     />
                     <Button 
                       type="submit" 
                       variant="default"
-                      className="w-full bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500"
+                      className="w-full bg-gradient-to-r from-violet-400 to-blue-400 hover:from-violet-500 hover:to-blue-500"
                     >
                       <Mail className="w-4 h-4 mr-2" />
                       Envoyer l'invitation

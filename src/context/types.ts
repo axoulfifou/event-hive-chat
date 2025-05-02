@@ -9,6 +9,7 @@ export interface AppContextType {
   navigateMonth: (direction: 'next' | 'prev') => void;
   navigateWeek: (direction: 'next' | 'prev') => void;
   events: Event[];
+  allEvents: Event[];
   users: User[];
   currentUser: User;
   selectedEvent: Event | null;
@@ -16,6 +17,8 @@ export interface AppContextType {
   chatOpen: boolean;
   setChatOpen: (open: boolean) => void;
   messages: Message[];
+  selectedUserFilter: string | null;
+  setSelectedUserFilter: (userId: string | null) => void;
   addEvent: (event: Omit<Event, 'id' | 'notes' | 'reactions'>) => void;
   deleteEvent: (eventId: string) => void;
   updateEvent: (event: Event) => void;

@@ -8,19 +8,22 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { ChevronLeft, UserRound, Globe, Palette, Shield, Bell } from 'lucide-react';
+import { useApp } from '@/context/AppContext';
+import Users from './Users';
 
 const Settings = () => {
   const [language, setLanguage] = useState("fr");
   const [theme, setTheme] = useState("light");
   const [notifications, setNotifications] = useState(true);
+  const { currentUser } = useApp();
   
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto px-10 py-8 max-w-4xl">
       <div className="flex items-center mb-6">
         <Button variant="ghost" asChild className="mr-3">
           <Link to="/"><ChevronLeft className="mr-1" /> Retour</Link>
         </Button>
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
+        <h1 className="text-2xl font-bold text-violet-500">
           Paramètres
         </h1>
       </div>
@@ -29,7 +32,7 @@ const Settings = () => {
         <TabsList className="grid w-full grid-cols-4 mb-6">
           <TabsTrigger value="users">
             <UserRound className="w-4 h-4 mr-2" />
-            <span>Utilisateurs</span>
+            <span>Membres</span>
           </TabsTrigger>
           <TabsTrigger value="language">
             <Globe className="w-4 h-4 mr-2" />
@@ -37,31 +40,16 @@ const Settings = () => {
           </TabsTrigger>
           <TabsTrigger value="themes">
             <Palette className="w-4 h-4 mr-2" />
-            <span>Thèmes</span>
+            <span>Thème</span>
           </TabsTrigger>
           <TabsTrigger value="privacy">
             <Shield className="w-4 h-4 mr-2" />
-            <span>Confidentialité</span>
+            <span>FAQ</span>
           </TabsTrigger>
         </TabsList>
         
         <TabsContent value="users">
-          <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm rounded-[30px]">
-            <CardHeader>
-              <CardTitle>Gestion des utilisateurs</CardTitle>
-              <CardDescription>
-                Gérez les utilisateurs et les permissions
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Button asChild className="w-full">
-                <Link to="/users">
-                  <UserRound className="mr-2" />
-                  Aller à la page utilisateurs
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <Users inSettingsTab={true} />
         </TabsContent>
         
         <TabsContent value="language">
@@ -135,6 +123,31 @@ const Settings = () => {
         <TabsContent value="privacy">
           <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm rounded-[30px]">
             <CardHeader>
+              <CardTitle>FAQ</CardTitle>
+              <CardDescription>
+                Questions fréquemment posées
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-medium text-lg">Comment ajouter un événement ?</h3>
+                  <p className="text-muted-foreground">Cliquez sur le bouton + en bas de l'écran pour créer un nouvel événement.</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-lg">Comment inviter des participants ?</h3>
+                  <p className="text-muted-foreground">Allez dans l'onglet Membres et utilisez le formulaire d'invitation par email.</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-lg">Comment partager mon calendrier ?</h3>
+                  <p className="text-muted-foreground">Cette fonctionnalité sera disponible prochainement.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm rounded-[30px] mt-6">
+            <CardHeader>
               <CardTitle>Politique de confidentialité</CardTitle>
               <CardDescription>
                 Informations sur la collecte et l'utilisation des données
@@ -143,15 +156,15 @@ const Settings = () => {
             <CardContent>
               <div className="prose max-w-none">
                 <p>Notre application respecte votre vie privée et s'engage à protéger vos données personnelles.</p>
-                <h3>Collecte des données</h3>
+                <h3 className="text-lg font-medium mt-4">Collecte des données</h3>
                 <p>Nous collectons uniquement les informations nécessaires au fonctionnement de l'application :</p>
-                <ul>
+                <ul className="list-disc pl-5 space-y-1">
                   <li>Données de profil (nom, avatar)</li>
                   <li>Événements et notes créés</li>
                 </ul>
-                <h3>Utilisation des données</h3>
+                <h3 className="text-lg font-medium mt-4">Utilisation des données</h3>
                 <p>Vos données sont utilisées uniquement pour le fonctionnement de l'application et ne sont pas partagées avec des tiers.</p>
-                <h3>Suppression des données</h3>
+                <h3 className="text-lg font-medium mt-4">Suppression des données</h3>
                 <p>Vous pouvez demander la suppression de vos données à tout moment en nous contactant.</p>
               </div>
             </CardContent>

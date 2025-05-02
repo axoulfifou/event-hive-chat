@@ -29,6 +29,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [hasNewMessages, setHasNewMessages] = useState(false);
+  const [selectedUserFilter, setSelectedUserFilter] = useState<string | null>(null);
 
   const showNotification = useCallback((message: string, eventId?: string) => {
     toast(message, {
@@ -56,6 +57,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     showNotification
   );
 
+  // Filter events based on selected user
+  const filteredEvents = selectedUserFilter
+    ? events.filter(event => 
+        event.userId === selectedUserFilter || 
+        event.participants?.some(p => p.id === selectedUserFilter)
+      )
+    : events;
+
   const value: AppContextType = {
     currentView,
     setCurrentView,
@@ -63,7 +72,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setCurrentDate,
     navigateMonth,
     navigateWeek,
-    events,
+    events: filteredEvents,
+    allEvents: events,
     users,
     currentUser,
     selectedEvent,
@@ -71,6 +81,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     chatOpen,
     setChatOpen,
     messages,
+    selectedUserFilter,
+    setSelectedUserFilter,
     ...eventActions,
     ...userActions,
     ...messageActions,
