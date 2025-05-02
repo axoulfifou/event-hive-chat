@@ -12,17 +12,14 @@ import { Label } from '@/components/ui/label';
 import { useApp } from '@/context/AppContext';
 import { Avatar } from '@/components/Avatar';
 import { User } from '@/types';
-import { Upload, User as UserIcon } from 'lucide-react';
+import { X } from 'lucide-react';
 
 export const UserProfileDialog: React.FC = () => {
   const { currentUser, updateUser } = useApp();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const colorOptions: User['color'][] = [
-    'blue', 'green', 'yellow', 'red', 'purple', 'orange', 
-    // Add more color options if desired
-  ];
+  const colorOptions: User['color'][] = ['blue', 'green', 'yellow', 'red', 'purple', 'orange'];
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,24 +41,20 @@ export const UserProfileDialog: React.FC = () => {
   };
 
   return (
-    <DialogContent className="sm:max-w-[425px] rounded-[30px] mx-auto">
+    <DialogContent className="sm:max-w-[425px] rounded-[30px] mx-10">
       <DialogHeader>
         <DialogTitle className="text-2xl font-bold text-center">Profil</DialogTitle>
       </DialogHeader>
-      <div className="grid gap-6 py-4">
+      <div className="grid gap-8 py-4">
         <div className="flex flex-col items-center gap-4 relative">
           <div className="relative">
             {currentUser.avatar ? (
               <Avatar user={currentUser} size="lg" className="h-24 w-24" />
             ) : (
-              <div className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center border border-gray-300 dark:border-gray-600 relative">
-                <UserIcon className="h-12 w-12 text-gray-500 dark:text-gray-400" />
-                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 rounded-full"></div>
+              <div className="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center border border-gray-300">
+                <span className="text-gray-500 text-2xl font-bold">{currentUser.initials}</span>
               </div>
             )}
-            <div className="absolute right-0 bottom-0 bg-primary rounded-full p-1 shadow-md">
-              <Upload className="h-4 w-4 text-white" />
-            </div>
           </div>
           
           <Label htmlFor="avatar" className="cursor-pointer">
@@ -123,10 +116,7 @@ export const UserProfileDialog: React.FC = () => {
                 key={color}
                 type="button"
                 className={`h-10 w-10 rounded-full border-2 p-0 ${currentUser.color === color ? 'border-violet-500' : 'border-transparent'}`}
-                style={{ 
-                  backgroundColor: getColorValue(color),
-                  boxShadow: currentUser.color === color ? '0 0 0 2px rgba(139, 92, 246, 0.3)' : 'none'
-                }}
+                style={{ backgroundColor: `var(--event-${color})` }}
                 onClick={() => handleColorChange(color)}
               >
                 {currentUser.color === color && <span className="absolute inset-0 flex items-center justify-center text-white">✓</span>}
@@ -138,15 +128,3 @@ export const UserProfileDialog: React.FC = () => {
     </DialogContent>
   );
 };
-
-function getColorValue(color: User['color']): string {
-  switch (color) {
-    case 'blue': return '#3b82f6';
-    case 'green': return '#22c55e';
-    case 'yellow': return '#eab308';
-    case 'red': return '#ef4444';
-    case 'purple': return '#8b5cf6';
-    case 'orange': return '#f97316';
-    default: return '#3b82f6';
-  }
-}

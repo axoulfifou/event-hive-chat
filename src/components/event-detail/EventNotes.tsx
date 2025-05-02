@@ -35,7 +35,11 @@ export const EventNotes: React.FC<EventNotesProps> = ({ event }) => {
     });
     
     setNoteContent('');
-    setIsPrivate(false);
+  };
+
+  const handleNoteClick = (note: Note) => {
+    // Function to handle note click, could be expanded later
+    console.log("Note clicked:", note);
   };
 
   return (
@@ -51,7 +55,8 @@ export const EventNotes: React.FC<EventNotesProps> = ({ event }) => {
             <NoteItem 
               key={note.id} 
               note={note} 
-              users={users}
+              users={users} 
+              onClick={() => handleNoteClick(note)}
             />
           ))
         ) : (
@@ -100,18 +105,20 @@ export const EventNotes: React.FC<EventNotesProps> = ({ event }) => {
 interface NoteItemProps {
   note: Note;
   users: User[];
+  onClick?: () => void;
 }
 
-const NoteItem: React.FC<NoteItemProps> = ({ note, users }) => {
+const NoteItem: React.FC<NoteItemProps> = ({ note, users, onClick }) => {
   const noteUser = users.find(u => u.id === note.userId);
   if (!noteUser) return null;
   
   return (
     <div 
       className={cn(
-        "border rounded-md p-3 animate-fade-in",
+        "border rounded-md p-3 animate-fade-in cursor-pointer hover:bg-muted/20 transition-colors",
         note.isPrivate && "bg-muted/30 border-dashed"
       )}
+      onClick={onClick}
     >
       <div className="flex justify-between items-start mb-2">
         <div className="flex items-center space-x-2">

@@ -42,23 +42,23 @@ export const CalendarHeader: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-2 px-4 py-3 md:px-10 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-950 dark:to-blue-950 text-purple-700 dark:text-purple-300 shadow-sm">
+    <div className="flex flex-col space-y-2 px-10 py-3 md:px-10 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <CalendarClock className="mr-2" />
-          <h1 className="text-xl font-semibold text-violet-500 dark:text-violet-400">Yen DAY</h1>
+          <h1 className="text-xl font-semibold text-violet-500">Yen DAY</h1>
         </div>
-        <Tabs value={currentView} onValueChange={handleViewChange} className="bg-white bg-opacity-40 dark:bg-black dark:bg-opacity-20 rounded-md">
+        <Tabs value={currentView} onValueChange={handleViewChange} className="bg-white bg-opacity-40 rounded-md">
           <TabsList className="bg-transparent">
             <TabsTrigger 
               value="month"
-              className="data-[state=active]:bg-white data-[state=active]:text-violet-600 dark:data-[state=active]:bg-violet-900 dark:data-[state=active]:text-white text-violet-600 dark:text-violet-300"
+              className="data-[state=active]:bg-white data-[state=active]:text-violet-600 text-violet-600"
             >
               Mois
             </TabsTrigger>
             <TabsTrigger 
               value="week"
-              className="data-[state=active]:bg-white data-[state=active]:text-violet-600 dark:data-[state=active]:bg-violet-900 dark:data-[state=active]:text-white text-violet-600 dark:text-violet-300"
+              className="data-[state=active]:bg-white data-[state=active]:text-violet-600 text-violet-600"
             >
               Semaine
             </TabsTrigger>
@@ -71,7 +71,7 @@ export const CalendarHeader: React.FC = () => {
           variant="ghost" 
           size="icon" 
           onClick={() => handleNavigate('prev')}
-          className="text-violet-600 dark:text-violet-300 hover:bg-white hover:bg-opacity-30 dark:hover:bg-white dark:hover:bg-opacity-10"
+          className="text-violet-600 hover:bg-white hover:bg-opacity-30"
         >
           <ChevronLeft className="h-5 w-5" />
         </Button>
@@ -82,7 +82,7 @@ export const CalendarHeader: React.FC = () => {
           variant="ghost" 
           size="icon" 
           onClick={() => handleNavigate('next')}
-          className="text-violet-600 dark:text-violet-300 hover:bg-white hover:bg-opacity-30 dark:hover:bg-white dark:hover:bg-opacity-10"
+          className="text-violet-600 hover:bg-white hover:bg-opacity-30"
         >
           <ChevronRight className="h-5 w-5" />
         </Button>
@@ -90,13 +90,13 @@ export const CalendarHeader: React.FC = () => {
           variant="ghost" 
           onClick={() => setCurrentDate(new Date())} 
           size="sm"
-          className="text-violet-600 dark:text-violet-300 hover:bg-white hover:bg-opacity-30 dark:hover:bg-white dark:hover:bg-opacity-10 ml-2"
+          className="text-violet-600 hover:bg-white hover:bg-opacity-30 ml-2"
         >
           Aujourd'hui
         </Button>
       </div>
       
-      <div className="flex items-center space-x-2 overflow-x-auto pb-2 px-1 sm:px-10">
+      <div className="flex items-center space-x-2 overflow-x-auto pb-2 px-10">
         <Button 
           variant={selectedUser === null ? "secondary" : "ghost"}
           size="sm"
@@ -112,14 +112,10 @@ export const CalendarHeader: React.FC = () => {
             key={user.id}
             variant={selectedUser === user.id ? "secondary" : "ghost"}
             size="sm"
-            className="rounded-full p-0 h-8 min-w-8 bg-white bg-opacity-70 dark:bg-slate-800"
+            className="rounded-full p-0 h-8 min-w-8 bg-white bg-opacity-70"
             onClick={() => handleUserSelect(user.id)}
           >
-            <Avatar 
-              user={user} 
-              size="sm" 
-              className={selectedUser === user.id ? "ring-2 ring-offset-1 ring-violet-500" : ""} 
-            />
+            <Avatar user={user} size="sm" className={selectedUser === user.id ? "ring-2 ring-offset-1 ring-violet-500" : ""} />
           </Button>
         ))}
       </div>
