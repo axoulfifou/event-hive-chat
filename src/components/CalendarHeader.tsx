@@ -8,13 +8,6 @@ import { ChevronLeft, ChevronRight, CalendarClock, User } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { ViewType } from '@/types';
 import { Avatar } from './Avatar';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 
 export const CalendarHeader: React.FC = () => {
   const { 
@@ -73,39 +66,37 @@ export const CalendarHeader: React.FC = () => {
         </Tabs>
       </div>
       
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-medium">
+      <div className="flex items-center justify-center space-x-2">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => handleNavigate('prev')}
+          className="text-violet-600 hover:bg-white hover:bg-opacity-30"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </Button>
+        <h2 className="text-lg font-medium px-2 min-w-[160px] text-center">
           {format(currentDate, currentView === 'month' ? 'MMMM yyyy' : "'Semaine du' d MMMM", { locale: fr })}
         </h2>
-        <div className="flex space-x-1">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => handleNavigate('prev')}
-            className="text-violet-600 hover:bg-white hover:bg-opacity-30"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            onClick={() => setCurrentDate(new Date())} 
-            size="sm"
-            className="text-violet-600 hover:bg-white hover:bg-opacity-30"
-          >
-            Aujourd'hui
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => handleNavigate('next')}
-            className="text-violet-600 hover:bg-white hover:bg-opacity-30"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </Button>
-        </div>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => handleNavigate('next')}
+          className="text-violet-600 hover:bg-white hover:bg-opacity-30"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </Button>
+        <Button 
+          variant="ghost" 
+          onClick={() => setCurrentDate(new Date())} 
+          size="sm"
+          className="text-violet-600 hover:bg-white hover:bg-opacity-30 ml-2"
+        >
+          Aujourd'hui
+        </Button>
       </div>
       
-      <div className="flex items-center space-x-2 overflow-x-auto pb-2">
+      <div className="flex items-center space-x-2 overflow-x-auto pb-2 px-10">
         <Button 
           variant={selectedUser === null ? "secondary" : "ghost"}
           size="sm"

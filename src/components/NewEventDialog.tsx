@@ -33,6 +33,7 @@ export const NewEventDialog: React.FC = () => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date>(new Date());
   const [eventType, setEventType] = useState<EventType>('event');
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,10 +120,11 @@ export const NewEventDialog: React.FC = () => {
           
           <div className="grid gap-2">
             <Label htmlFor="date">Date</Label>
-            <Popover>
+            <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
+                  id="date"
                   className={cn(
                     "w-full justify-start text-left font-normal",
                     !date && "text-muted-foreground"
@@ -132,12 +134,18 @@ export const NewEventDialog: React.FC = () => {
                   {date ? format(date, "PPP", { locale: fr }) : <span>Sélectionnez une date</span>}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
+              <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
                   selected={date}
-                  onSelect={(date) => date && setDate(date)}
+                  onSelect={(selectedDate) => {
+                    if (selectedDate) {
+                      setDate(selectedDate);
+                      setIsCalendarOpen(false);
+                    }
+                  }}
                   initialFocus
+                  className="pointer-events-auto"
                 />
               </PopoverContent>
             </Popover>

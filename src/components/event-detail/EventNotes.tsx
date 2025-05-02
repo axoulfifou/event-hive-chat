@@ -37,6 +37,11 @@ export const EventNotes: React.FC<EventNotesProps> = ({ event }) => {
     setNoteContent('');
   };
 
+  const handleNoteClick = (note: Note) => {
+    // Function to handle note click, could be expanded later
+    console.log("Note clicked:", note);
+  };
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       <h3 className="text-sm font-medium mb-2 flex items-center">
@@ -46,7 +51,14 @@ export const EventNotes: React.FC<EventNotesProps> = ({ event }) => {
       
       <div className="flex-1 overflow-y-auto mb-4 space-y-3">
         {visibleNotes.length > 0 ? (
-          visibleNotes.map(note => <NoteItem key={note.id} note={note} users={users} />)
+          visibleNotes.map(note => (
+            <NoteItem 
+              key={note.id} 
+              note={note} 
+              users={users} 
+              onClick={() => handleNoteClick(note)}
+            />
+          ))
         ) : (
           <div className="text-sm text-muted-foreground italic text-center py-6">
             Aucune note pour le moment
@@ -93,17 +105,21 @@ export const EventNotes: React.FC<EventNotesProps> = ({ event }) => {
 interface NoteItemProps {
   note: Note;
   users: User[];
+  onClick?: () => void;
 }
 
-const NoteItem: React.FC<NoteItemProps> = ({ note, users }) => {
+const NoteItem: React.FC<NoteItemProps> = ({ note, users, onClick }) => {
   const noteUser = users.find(u => u.id === note.userId);
   if (!noteUser) return null;
   
   return (
-    <div className={cn(
-      "border rounded-md p-3 animate-fade-in",
-      note.isPrivate && "bg-muted/30 border-dashed"
-    )}>
+    <div 
+      className={cn(
+        "border rounded-md p-3 animate-fade-in cursor-pointer hover:bg-muted/20 transition-colors",
+        note.isPrivate && "bg-muted/30 border-dashed"
+      )}
+      onClick={onClick}
+    >
       <div className="flex justify-between items-start mb-2">
         <div className="flex items-center space-x-2">
           <Avatar user={noteUser} size="sm" />

@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,7 +19,7 @@ export const UserProfileDialog: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const colorOptions: User['color'][] = ['blue', 'green', 'yellow', 'red', 'purple', 'orange', 'teal'];
+  const colorOptions: User['color'][] = ['blue', 'green', 'yellow', 'red', 'purple', 'orange'];
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,19 +43,18 @@ export const UserProfileDialog: React.FC = () => {
   return (
     <DialogContent className="sm:max-w-[425px] rounded-[30px] mx-10">
       <DialogHeader>
-        <DialogTitle className="text-2xl font-bold text-center">Paramètres</DialogTitle>
+        <DialogTitle className="text-2xl font-bold text-center">Profil</DialogTitle>
       </DialogHeader>
       <div className="grid gap-8 py-4">
         <div className="flex flex-col items-center gap-4 relative">
           <div className="relative">
-            <Avatar user={currentUser} size="lg" className="h-24 w-24" />
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="absolute -top-2 -right-2 h-8 w-8 rounded-full bg-white shadow-md"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            {currentUser.avatar ? (
+              <Avatar user={currentUser} size="lg" className="h-24 w-24" />
+            ) : (
+              <div className="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center border border-gray-300">
+                <span className="text-gray-500 text-2xl font-bold">{currentUser.initials}</span>
+              </div>
+            )}
           </div>
           
           <Label htmlFor="avatar" className="cursor-pointer">
@@ -112,7 +110,7 @@ export const UserProfileDialog: React.FC = () => {
         
         <div className="grid gap-2">
           <Label>Couleur</Label>
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-6 gap-3">
             {colorOptions.map((color) => (
               <Button
                 key={color}

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/Avatar';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { CalendarIcon, X, Trash } from 'lucide-react';
+import { CalendarIcon, Trash } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { EventNotes } from '@/components/event-detail/EventNotes';
 import { EventReactions } from '@/components/event-detail/EventReactions';
@@ -44,9 +44,6 @@ export const EventDetail: React.FC = () => {
               )} />
               <SheetTitle className="text-xl font-semibold">{selectedEvent.title}</SheetTitle>
             </div>
-            <Button variant="ghost" size="icon" onClick={handleClose}>
-              <X className="h-5 w-5" />
-            </Button>
           </div>
         </SheetHeader>
         
