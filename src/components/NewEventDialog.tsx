@@ -64,7 +64,7 @@ export const NewEventDialog: React.FC = () => {
   };
 
   return (
-    <DialogContent className="sm:max-w-[500px] rounded-[30px]">
+    <DialogContent className="sm:max-w-[400px] rounded-[30px]">
       <DialogHeader>
         <DialogTitle className="text-2xl font-bold">Nouvel événement</DialogTitle>
         <DialogDescription>

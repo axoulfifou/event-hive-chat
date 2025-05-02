@@ -6,19 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { ChevronLeft, UserRound, Globe, Palette, Shield, Bell } from 'lucide-react';
+import { ChevronLeft, UserRound, Globe, Palette, Shield } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import Users from './Users';
 
 const Settings = () => {
   const [language, setLanguage] = useState("fr");
   const [theme, setTheme] = useState("light");
-  const [notifications, setNotifications] = useState(true);
   const { currentUser } = useApp();
   
   return (
-    <div className="container mx-auto px-10 py-8 max-w-4xl">
+    <div className="container mx-auto px-10 py-8 max-w-4xl overflow-y-auto h-full">
       <div className="flex items-center mb-6">
         <Button variant="ghost" asChild className="mr-3">
           <Link to="/"><ChevronLeft className="mr-1" /> Retour</Link>
@@ -103,17 +101,6 @@ const Settings = () => {
                       <SelectItem value="system">Système</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="notifications" className="cursor-pointer">
-                    Notifications
-                  </Label>
-                  <Switch
-                    id="notifications"
-                    checked={notifications}
-                    onCheckedChange={setNotifications}
-                  />
                 </div>
               </div>
             </CardContent>

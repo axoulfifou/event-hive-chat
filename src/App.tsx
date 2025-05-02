@@ -10,6 +10,9 @@ import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 
+// Remove unused CSS
+import "./index.css";
+
 const queryClient = new QueryClient();
 
 const App = () => (

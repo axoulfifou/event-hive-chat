@@ -12,10 +12,12 @@ const Index: React.FC = () => {
   const { currentView } = useApp();
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col h-screen overflow-y-auto">
       <CalendarHeader />
       
-      {currentView === 'month' ? <MonthView /> : <WeekView />}
+      <div className="flex-grow overflow-y-auto overflow-x-hidden touch-pan-y">
+        {currentView === 'month' ? <MonthView /> : <WeekView />}
+      </div>
       
       <Footer />
       

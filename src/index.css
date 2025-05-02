@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://rsms.me/inter/inter.css');
 
@@ -93,7 +94,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans overflow-x-hidden touch-pan-y;
   }
   
   .event-dot {
@@ -127,4 +128,23 @@
   .event-day {
     @apply bg-gradient-to-br from-blue-50 to-purple-50;
   }
+}
+
+html, body {
+  overscroll-behavior-y: contain;
+  height: 100%;
+  width: 100%;
+}
+
+.swipe-container {
+  touch-action: pan-y;
+  user-select: none;
+}
+
+#root {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
