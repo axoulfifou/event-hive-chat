@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Avatar } from '@/components/Avatar';
-import { X, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -49,9 +49,6 @@ export const Chat: React.FC = () => {
         <SheetHeader className="space-y-0 pb-4">
           <div className="flex justify-between items-center">
             <SheetTitle className="text-xl font-semibold">Chat Groupe</SheetTitle>
-            <Button variant="ghost" size="icon" onClick={handleClose}>
-              <X className="h-5 w-5" />
-            </Button>
           </div>
         </SheetHeader>
         

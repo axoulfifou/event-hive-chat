@@ -28,6 +28,7 @@ export const EventDetail: React.FC = () => {
   if (!selectedEvent) return null;
   
   const eventUser = users.find(u => u.id === selectedEvent.userId);
+  const participants = selectedEvent.participants || [];
 
   return (
     <Sheet open={!!selectedEvent} onOpenChange={(isOpen) => !isOpen && handleClose()}>
@@ -35,7 +36,7 @@ export const EventDetail: React.FC = () => {
         "flex flex-col rounded-[30px]",
         isMobile ? "w-full max-w-full p-4" : "sm:max-w-md"
       )}>
-        <SheetHeader className="space-y-0 pb-4">
+        <SheetHeader className="space-y-2 pb-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
               <div className={cn(
@@ -63,6 +64,20 @@ export const EventDetail: React.FC = () => {
               {eventUser && <Avatar user={eventUser} size="sm" />}
               <span className="text-sm">{eventUser?.name}</span>
             </div>
+
+            {participants.length > 0 && (
+              <div className="flex flex-col space-y-2">
+                <span className="text-sm font-medium">Participants:</span>
+                <div className="flex flex-wrap gap-2">
+                  {participants.map((participant) => (
+                    <div key={participant.id} className="flex items-center space-x-1 bg-secondary rounded-full px-2 py-1">
+                      <Avatar user={participant} size="sm" />
+                      <span className="text-xs">{participant.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           
           {/* Réactions */}

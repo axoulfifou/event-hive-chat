@@ -20,7 +20,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent border-t border-border flex items-center justify-around px-4 z-10">
+    <div className="fixed bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent border-t border-border flex items-center justify-around px-4 z-10">
       <Button variant="ghost" size="lg" onClick={handleChatClick} className="relative">
         <MessageCircle />
         <span className="ml-2 hidden md:inline font-semibold">Chat</span>
