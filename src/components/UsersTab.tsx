@@ -55,15 +55,6 @@ const UsersTab = () => {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="hover:bg-blue-50 hover:text-blue-600 transition-colors"
-              onClick={() => toast.success(`Notification envoyée à ${user.name}`)}
-            >
-              <Bell className="w-4 h-4 mr-2" />
-              Notifier
-            </Button>
             {user.id !== currentUser.id && (
               <Button 
                 variant="outline" 
