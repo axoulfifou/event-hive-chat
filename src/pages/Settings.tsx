@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, UserRound, Globe, Palette, Shield } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
-import Users from './Users';
+import UsersTab from '@/components/UsersTab';
 
 const Settings = () => {
   const [language, setLanguage] = useState("fr");
@@ -47,7 +47,17 @@ const Settings = () => {
         </TabsList>
         
         <TabsContent value="users">
-          <Users inSettingsTab={true} />
+          <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm rounded-[30px]">
+            <CardHeader>
+              <CardTitle>Liste des participants</CardTitle>
+              <CardDescription>
+                Les participants au calendrier et invitations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <UsersTab />
+            </CardContent>
+          </Card>
         </TabsContent>
         
         <TabsContent value="language">

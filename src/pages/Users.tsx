@@ -9,11 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
-interface UsersProps {
-  inSettingsTab?: boolean;
-}
-
-const Users = ({ inSettingsTab = false }: UsersProps) => {
+const Users = () => {
   const { users, currentUser, removeUser } = useApp();
   const [email, setEmail] = useState('');
 
@@ -36,12 +32,10 @@ const Users = ({ inSettingsTab = false }: UsersProps) => {
   };
 
   return (
-    <div className={inSettingsTab ? "" : "container mx-auto px-10 py-8 max-w-4xl"}>
-      {!inSettingsTab && (
-        <h1 className="text-2xl font-bold mb-6 text-center text-violet-500">
-          Gestion des participants
-        </h1>
-      )}
+    <div className="container mx-auto px-10 py-8 max-w-4xl">
+      <h1 className="text-2xl font-bold mb-6 text-center text-violet-500">
+        Gestion des participants
+      </h1>
       
       <div className="grid gap-6">
         <Card className="border-none shadow-md bg-white/60 backdrop-blur-sm rounded-[30px]">
