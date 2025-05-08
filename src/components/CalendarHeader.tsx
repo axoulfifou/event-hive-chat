@@ -1,105 +1,128 @@
 
-// Nous modifierons CalendarHeader pour ajouter un lien vers la page de connexion
-// et un bouton de déconnexion si l'utilisateur est connecté
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import { ChevronLeft, ChevronRight, CalendarClock, User } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
-import { Avatar } from '@/components/Avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { LogOut, Settings as SettingsIcon, Users } from 'lucide-react';
-import { toast } from "sonner";
+import { ViewType } from '@/types';
+import { Avatar } from './Avatar';
 
-const CalendarHeader = () => {
-  const { currentUser } = useApp();
-  const navigate = useNavigate();
-  const [loggedUser, setLoggedUser] = useState<any>(null);
+export const CalendarHeader: React.FC = () => {
+  const { 
+    currentView, 
+    setCurrentView, 
+    currentDate, 
+    setCurrentDate,
+    navigateMonth, 
+    navigateWeek,
+    users,
+    currentUser,
+    setSelectedUserFilter
+  } = useApp();
+  
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
 
-  useEffect(() => {
-    const userStr = localStorage.getItem('calendar_user');
-    if (userStr) {
-      try {
-        setLoggedUser(JSON.parse(userStr));
-      } catch (error) {
-        console.error('Erreur lors du parsing de l\'utilisateur:', error);
-      }
+  const handleViewChange = (value: string) => {
+    setCurrentView(value as ViewType);
+  };
+
+  const handleNavigate = (direction: 'next' | 'prev') => {
+    if (currentView === 'month') {
+      navigateMonth(direction);
+    } else {
+      navigateWeek(direction);
     }
-  }, []);
+  };
 
-  const handleLogout = () => {
-    localStorage.removeItem('calendar_user');
-    setLoggedUser(null);
-    toast.success('Vous êtes déconnecté');
-    navigate('/login');
+  const handleUserSelect = (userId: string | null) => {
+    setSelectedUser(userId);
+    setSelectedUserFilter(userId);
   };
 
   return (
-    <header className="sticky top-0 z-30 w-full border-b bg-white bg-opacity-90 backdrop-blur-sm shadow-sm">
-      <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2 md:gap-4">
-          <Link to="/" className="font-bold text-xl md:text-2xl bg-gradient-to-r from-violet-500 to-blue-500 bg-clip-text text-transparent">
-            Calendar
-          </Link>
+    <div className="flex flex-col space-y-2 px-10 py-3 md:px-10 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 shadow-sm">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <CalendarClock className="mr-2" />
+          <h1 className="text-xl font-semibold text-violet-500">Calendar</h1>
         </div>
-
-        <div className="flex items-center gap-2 md:gap-4">
-          {loggedUser ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                  <Avatar
-                    user={{
-                      id: loggedUser.id,
-                      name: loggedUser.nom_utilisateur,
-                      color: '#9b87f5', // Utiliser une couleur par défaut
-                    }}
-                  />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
-                  {loggedUser.nom_utilisateur}
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link to="/users" className="flex items-center">
-                    <Users className="mr-2 h-4 w-4" />
-                    <span>Gestion des utilisateurs</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/settings" className="flex items-center">
-                    <SettingsIcon className="mr-2 h-4 w-4" />
-                    <span>Paramètres</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-red-500 hover:text-red-600 focus:text-red-600">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Déconnexion</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button 
-              variant="outline" 
-              className="bg-gradient-to-r from-violet-500 to-blue-500 text-white border-0 hover:from-violet-600 hover:to-blue-600"
-              onClick={() => navigate('/login')}
-            >
-              Se connecter
-            </Button>
-          )}
+        
+        <div className="flex items-center space-x-2">
+          <Tabs value={currentView} onValueChange={handleViewChange} className="bg-white bg-opacity-40 rounded-md">
+            <TabsList className="bg-transparent">
+              <TabsTrigger 
+                value="month"
+                className="data-[state=active]:bg-white data-[state=active]:text-violet-600 text-violet-600"
+              >
+                Mois
+              </TabsTrigger>
+              <TabsTrigger 
+                value="week"
+                className="data-[state=active]:bg-white data-[state=active]:text-violet-600 text-violet-600"
+              >
+                Semaine
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+          
+          <Button 
+            variant="ghost" 
+            onClick={() => setCurrentDate(new Date())} 
+            size="sm"
+            className="text-violet-600 hover:bg-white hover:bg-opacity-30"
+          >
+            Aujourd'hui
+          </Button>
         </div>
       </div>
-    </header>
+      
+      <div className="flex items-center justify-center space-x-2">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => handleNavigate('prev')}
+          className="text-violet-600 hover:bg-white hover:bg-opacity-30"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </Button>
+        <h2 className="text-lg font-medium px-2 min-w-[160px] text-center">
+          {format(currentDate, currentView === 'month' ? 'MMMM yyyy' : "'Semaine du' d MMMM", { locale: fr })}
+        </h2>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => handleNavigate('next')}
+          className="text-violet-600 hover:bg-white hover:bg-opacity-30"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </Button>
+      </div>
+      
+      <div className="flex items-center space-x-2 overflow-x-auto pb-2 px-10">
+        <Button 
+          variant={selectedUser === null ? "secondary" : "ghost"}
+          size="sm"
+          className="rounded-full"
+          onClick={() => handleUserSelect(null)}
+        >
+          <User className="h-4 w-4 mr-1" />
+          <span className="text-xs">Tous</span>
+        </Button>
+
+        {users.map(user => (
+          <Button 
+            key={user.id}
+            variant={selectedUser === user.id ? "secondary" : "ghost"}
+            size="sm"
+            className="rounded-full p-0 h-8 min-w-8 bg-white bg-opacity-70"
+            onClick={() => handleUserSelect(user.id)}
+          >
+            <Avatar user={user} size="sm" className={selectedUser === user.id ? "ring-2 ring-offset-1 ring-violet-500" : ""} />
+          </Button>
+        ))}
+      </div>
+    </div>
   );
 };
-
-export { CalendarHeader };
